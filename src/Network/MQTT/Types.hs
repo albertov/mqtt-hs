@@ -165,7 +165,7 @@ data Property = PropPayloadFormatIndicator Word8
               | PropWildcardSubscriptionAvailable Word8
               | PropSubscriptionIdentifierAvailable Word8
               | PropSharedSubscriptionAvailable Word8
-              deriving (Show, Eq)
+              deriving (Show, Eq, Ord)
 
 peW8 :: Word8 -> Word8 -> BL.ByteString
 peW8 i x = BL.singleton i <> encodeWord8 x
