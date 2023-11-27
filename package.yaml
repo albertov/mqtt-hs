@@ -39,6 +39,7 @@ dependencies:
 - crypton-connection   >= 0.3.0
 - monad-loops          >= 0.4.3
 - time                 >= 1.9
+- hashable
 
 library:
   source-dirs: src
