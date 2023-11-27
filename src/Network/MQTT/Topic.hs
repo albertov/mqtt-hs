@@ -17,6 +17,8 @@ module Network.MQTT.Topic (
   mkFilter, mkTopic, split, toFilter
 ) where
 
+import           Control.DeepSeq (NFData)
+import           Data.Hashable (Hashable)
 import           Data.String (IsString (..))
 import           Data.Text   (Text, isPrefixOf, splitOn)
 
@@ -25,7 +27,7 @@ class Splittable a where
   split :: a -> [a]
 
 -- | An MQTT topic.
-newtype Topic = Topic { unTopic :: Text } deriving (Show, Ord, Eq, IsString)
+newtype Topic = Topic { unTopic :: Text } deriving (Show, Ord, Eq, IsString, NFData, Hashable)
 
 instance Splittable Topic where
   split (Topic t) = Topic <$> splitOn "/" t
@@ -44,7 +46,7 @@ mkTopic t = Topic <$> validate (splitOn "/" t)
     validate (_:xs)  = validate xs
 
 -- | An MQTT topic filter.
-newtype Filter = Filter { unFilter :: Text } deriving (Show, Ord, Eq, IsString)
+newtype Filter = Filter { unFilter :: Text } deriving (Show, Ord, Eq, IsString, NFData, Hashable)
 
 instance Splittable Filter where
   split (Filter f) = Filter <$> splitOn "/" f
