@@ -9,6 +9,8 @@ Stability   : experimental
 MQTT Types.
 -}
 
+{-# LANGUAGE DeriveAnyClass    #-}
+{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 
@@ -28,6 +30,7 @@ module Network.MQTT.Types (
   ) where
 
 import           Control.Applicative             (liftA2, (<|>))
+import           Control.DeepSeq                 (NFData)
 import           Control.Monad                   (replicateM, when)
 import           Data.Attoparsec.Binary          (anyWord16be, anyWord32be)
 import qualified Data.Attoparsec.ByteString      as AS
@@ -39,6 +42,7 @@ import           Data.Foldable                   (asum)
 import           Data.Functor                    (($>))
 import           Data.Maybe                      (fromMaybe, isJust)
 import           Data.Word                       (Word16, Word32, Word8)
+import           GHC.Generics                    (Generic)
 
 -- | QoS values for publishing and subscribing.
 data QoS = QoS0 | QoS1 | QoS2 deriving (Bounded, Enum, Eq, Show, Ord)
@@ -165,7 +169,7 @@ data Property = PropPayloadFormatIndicator Word8
               | PropWildcardSubscriptionAvailable Word8
               | PropSubscriptionIdentifierAvailable Word8
               | PropSharedSubscriptionAvailable Word8
-              deriving (Show, Eq, Ord)
+              deriving (Show, Eq, Ord, Generic, NFData)
 
 peW8 :: Word8 -> Word8 -> BL.ByteString
 peW8 i x = BL.singleton i <> encodeWord8 x
