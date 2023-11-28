@@ -45,7 +45,7 @@ import           Data.Word                       (Word16, Word32, Word8)
 import           GHC.Generics                    (Generic)
 
 -- | QoS values for publishing and subscribing.
-data QoS = QoS0 | QoS1 | QoS2 deriving (Bounded, Enum, Eq, Show, Ord)
+data QoS = QoS0 | QoS1 | QoS2 deriving (Bounded, Enum, Eq, Show, Ord, Generic, NFData)
 
 qosW :: QoS -> Word8
 qosW = toEnum . fromEnum
@@ -593,7 +593,7 @@ parsePublish prot = do
 data RetainHandling = SendOnSubscribe       -- ^ Send existing retained messages to a new client.
                     | SendOnSubscribeNew    -- ^ Send existing retained messages that have not yet been sent.
                     | DoNotSendOnSubscribe  -- ^ Don't send existing retained messages.
-  deriving (Eq, Show, Bounded, Enum)
+  deriving (Eq, Show, Bounded, Enum, Generic, NFData)
 
 -- | Options used at subscribe time to define how to handle incoming messages.
 data SubOptions = SubOptions{
@@ -601,7 +601,7 @@ data SubOptions = SubOptions{
   , _retainAsPublished :: Bool            -- ^ If true, retain is propagated on subscribe.
   , _noLocal           :: Bool            -- ^ If true, do not send messages initiated from this client back.
   , _subQoS            :: QoS             -- ^ Maximum QoS to use for this subscription.
-  } deriving(Eq, Show)
+  } deriving(Eq, Show, Generic, NFData)
 
 -- | Reasonable subscription option defaults at 'QoS0'.
 subOptions :: SubOptions
